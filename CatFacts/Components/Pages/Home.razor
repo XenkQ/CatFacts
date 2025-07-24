@@ -1,16 +1,38 @@
 ﻿@page "/"
+@inject Services.Api.ICatFactApiService CatFactApiService
 
 <PageTitle>Cat Facts</PageTitle>
 
 <h1>Cat Facts</h1>
 
 <div class="m-0 border-0">
-    <div class="alert alert-success" role="alert">
-        <h4 class="alert-heading">Well done!</h4>
-        <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
-        <hr>
-        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+    <div class="alert alert-light">
+        <p class="text-dark">@_catFact?.Fact</p>
     </div>
 </div>
 
-<button class="btn btn-primary" type="button">Show new cat fact</button>
+@if(_isLoading)
+{
+    <button class="btn btn-primary" type="button" disabled="">
+        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+        <span role="status">Searching...</span>
+    </button>
+}
+else
+{
+    <button class="btn btn-primary" type="button" @onclick="FetchCatFactAsync">Show new cat fact</button>
+}
+
+@code {
+    private Models.CatFact? _catFact;
+    private bool _isLoading = false;
+
+    public async void FetchCatFactAsync()
+    {
+        _isLoading = true;
+        _catFact = await CatFactApiService.Get();
+        _isLoading = false;
+
+        StateHasChanged();
+    }
+}
