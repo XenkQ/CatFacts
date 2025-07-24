@@ -1,9 +1,22 @@
 using CatFacts.Components;
+using CatFacts.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+var appConfiguration = new ConfigurationBuilder()
+  .SetBasePath(AppContext.BaseDirectory)
+  .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+  .Build();
+
+builder.Services.AddHttpClient("BackendApi", client =>
+{
+    client.BaseAddress = new Uri(appConfiguration["BackendApi:BaseUrl"]);
+});
+
+builder.Services.AddScoped<ICatFactApiService, CatFactApiService>();
 
 var app = builder.Build();
 
