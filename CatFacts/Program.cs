@@ -19,8 +19,9 @@ builder.Services.AddHttpClient("BackendApi", client =>
     client.BaseAddress = new Uri(appConfiguration["BackendApi:BaseUrl"]);
 });
 
+builder.Services.AddSingleton<IInformationLogger, InformationLogger>();
+
 builder.Services.AddScoped<ICatFactApiService, CatFactApiService>();
-builder.Services.AddScoped<IInformationLogger, InformationLogger>();
 
 var app = builder.Build();
 
