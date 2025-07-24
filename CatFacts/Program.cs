@@ -1,5 +1,5 @@
 using CatFacts.Components;
-using CatFacts.Services;
+using CatFacts.Services.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 

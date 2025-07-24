@@ -1,6 +1,6 @@
 ﻿using CatFacts.Models;
 
-namespace CatFacts.Services;
+namespace CatFacts.Services.Api;
 
 public interface ICatFactApiService
 {
