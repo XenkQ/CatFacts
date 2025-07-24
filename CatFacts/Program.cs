@@ -1,5 +1,6 @@
 using CatFacts.Components;
 using CatFacts.Services.Api;
+using CatFacts.Services.Logger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,12 +12,15 @@ var appConfiguration = new ConfigurationBuilder()
   .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
   .Build();
 
+builder.Services.AddSingleton<IConfigurationRoot>(appConfiguration);
+
 builder.Services.AddHttpClient("BackendApi", client =>
 {
     client.BaseAddress = new Uri(appConfiguration["BackendApi:BaseUrl"]);
 });
 
 builder.Services.AddScoped<ICatFactApiService, CatFactApiService>();
+builder.Services.AddScoped<IInformationLogger, InformationLogger>();
 
 var app = builder.Build();
 
